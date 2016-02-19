@@ -2,11 +2,11 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>The TRYHARD : à la recherche du plus gros tryhard</title>
 </head>
 <body>
 <h1>
-	Hello world! MEs farfadets 
+	QUI tryhard le PLUS dans le TOP5?????
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
