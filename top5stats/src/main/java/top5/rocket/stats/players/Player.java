@@ -43,6 +43,14 @@ public class Player {
 	private int nbDMG;
 	private int nbAirshoutes;
 	private int classesTotalesPrises;
+	private double moyenneOffclass;
+	private int drops;
+	private int nbMedics;
+	private int moyenneDrops;
+	
+	public String classes[] = {"scout", "soldier", "demoman", "medic", "spy", "sniper", "pyro", 
+							   "heavyweapons", "engineer"};
+	
 	
 	
 	
@@ -50,28 +58,14 @@ public class Player {
 		this.pseudo = p;
 		this.idSteam = id;
 		this.classesTotalesPrises = 0;
+		
 		moyenneClassesPrises = new HashMap<String, Double>();
-		moyenneClassesPrises.put("scout", 0.0);
-		moyenneClassesPrises.put("soldier", 0.0);
-		moyenneClassesPrises.put("demoman", 0.0);
-		moyenneClassesPrises.put("medic", 0.0);
-		moyenneClassesPrises.put("spy", 0.0);
-		moyenneClassesPrises.put("sniper", 0.0);
-		moyenneClassesPrises.put("pyro", 0.0);
-		moyenneClassesPrises.put("heavy", 0.0);
-		moyenneClassesPrises.put("engineer", 0.0);
-		
 		nombreClassesPrises = new HashMap<String, Integer>();
-		nombreClassesPrises.put("scout", 0);
-		nombreClassesPrises.put("soldier", 0);
-		nombreClassesPrises.put("demoman", 0);
-		nombreClassesPrises.put("medic", 0);
-		nombreClassesPrises.put("spy", 0);
-		nombreClassesPrises.put("sniper", 0);
-		nombreClassesPrises.put("pyro", 0);
-		nombreClassesPrises.put("heavy", 0);
-		nombreClassesPrises.put("engineer", 0);
-		
+
+		for(String c : classes){
+			moyenneClassesPrises.put(c, 0.0);
+			nombreClassesPrises.put(c, 0);
+		}
 		
 		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+id).getJSONArray("logs");
 		this.logsJoueur = genLogs(rawLogs);
@@ -105,23 +99,144 @@ public class Player {
 		this.nbMatchs = nbMatchs;
 	}
 
+	public HashMap<String, Integer> getNombreClassesPrises() {
+		return nombreClassesPrises;
+	}
+
+	public void setNombreClassesPrises(HashMap<String, Integer> nombreClassesPrises) {
+		this.nombreClassesPrises = nombreClassesPrises;
+	}
+
+	public HashMap<String, Double> getMoyenneClassesPrises() {
+		return moyenneClassesPrises;
+	}
+
+	public void setMoyenneClassesPrises(HashMap<String, Double> moyenneClassesPrises) {
+		this.moyenneClassesPrises = moyenneClassesPrises;
+	}
+
+	public int getNbFrags() {
+		return nbFrags;
+	}
+
+	public void setNbFrags(int nbFrags) {
+		this.nbFrags = nbFrags;
+	}
+
+	public double getMoyenneFrags() {
+		return moyenneFrags;
+	}
+
+	public void setMoyenneFrags(double moyenneFrags) {
+		this.moyenneFrags = moyenneFrags;
+	}
+
+	public double getMoyenneDMG() {
+		return moyenneDMG;
+	}
+
+	public void setMoyenneDMG(double moyenneDMG) {
+		this.moyenneDMG = moyenneDMG;
+	}
+
+	public double getMoyenneAirshoutes() {
+		return moyenneAirshoutes;
+	}
+
+	public void setMoyenneAirshoutes(double moyenneAirshoutes) {
+		this.moyenneAirshoutes = moyenneAirshoutes;
+	}
+
+	public int getNbDMG() {
+		return nbDMG;
+	}
+
+	public void setNbDMG(int nbDMG) {
+		this.nbDMG = nbDMG;
+	}
+
+	public int getNbAirshoutes() {
+		return nbAirshoutes;
+	}
+
+	public void setNbAirshoutes(int nbAirshoutes) {
+		this.nbAirshoutes = nbAirshoutes;
+	}
+
+	public int getClassesTotalesPrises() {
+		return classesTotalesPrises;
+	}
+
+	public void setClassesTotalesPrises(int classesTotalesPrises) {
+		this.classesTotalesPrises = classesTotalesPrises;
+	}
+
+	public double getMoyenneOffclass() {
+		return moyenneOffclass;
+	}
+
+	public void setMoyenneOffclass(double moyenneOffclass) {
+		this.moyenneOffclass = moyenneOffclass;
+	}
+
+	public int getDrops() {
+		return drops;
+	}
+
+	public void setDrops(int drops) {
+		this.drops = drops;
+	}
+
+	public int getNbMedics() {
+		return nbMedics;
+	}
+
+	public void setNbMedics(int nbMedics) {
+		this.nbMedics = nbMedics;
+	}
+
+	public int getMoyenneDrops() {
+		return moyenneDrops;
+	}
+
+	public void setMoyenneDrops(int moyenneDrops) {
+		this.moyenneDrops = moyenneDrops;
+	}
+
+	public String[] getClasses() {
+		return classes;
+	}
+
+	public void setClasses(String[] classes) {
+		this.classes = classes;
+	}
 
 	public void initStats() throws JSONException, IOException{
-		//for(int id : logsJoueur){
-		for(int i = 0; i < 20; i++){
-			int id = logsJoueur.get(i);
+		for(int id : logsJoueur){
+		//for(int i = 0; i < 20; i++){
+			//int id = logsJoueur.get(i);
 			JSONObject log = readJsonFromUrl("http://logs.tf/json/"+id).getJSONObject("players");
-			JSONObject statsJoueur = log.getJSONObject(idSteam);
-			this.nbMatchs++;
-			this.nbFrags += (Integer) statsJoueur.get("kills");
-			this.nbAirshoutes += (Integer) statsJoueur.get("as");
-			this.nbDMG += (Integer) statsJoueur.get("dmg");
-			classLog(statsJoueur.getJSONArray("class_stats"));
+			try{
+				JSONObject statsJoueur = log.getJSONObject(idSteam);
+				this.nbMatchs++;
+				this.nbFrags += (Integer) statsJoueur.get("kills");
+				this.nbAirshoutes += (Integer) statsJoueur.get("as");
+				this.nbDMG += (Integer) statsJoueur.get("dmg");
+				classLog(statsJoueur.getJSONArray("class_stats"));
+				this.moyenneFrags = nbFrags/nbMatchs;
+				this.moyenneAirshoutes = nbAirshoutes/nbMatchs;
+				this.moyenneDMG = nbDMG/nbMatchs;
+				this.moyenneOffclass = this.classesTotalesPrises/this.nbMatchs;
+				for(String c : classes){
+					this.moyenneClassesPrises.put(c, (Math.round((((double) nombreClassesPrises.get(c)/((double) this.classesTotalesPrises))*100)*10d)/10d));
+				}
+			}
+			catch(Exception e){
+				System.out.println("logs vieux format // ignoré");
+				break;
+			}
+
 		}
-		this.moyenneFrags = nbFrags/nbMatchs;
-		this.moyenneAirshoutes = nbAirshoutes/nbMatchs;
-		this.moyenneDMG = nbDMG/nbMatchs;
-		moyenneClassLog();
 	}
 	
 	private void classLog(JSONArray classStats){
@@ -132,27 +247,25 @@ public class Player {
 		}
 	}
 	
-	private void moyenneClassLog(){
-		//todo
-	}
-	
 	
 	public static ArrayList<Integer> genLogs(JSONArray rawLogs){
 		ArrayList<Integer> listeLogs = new ArrayList<Integer>();
 		ArrayList<Integer> dateLogs = new ArrayList<Integer>();
-		int doublons = 0;
+		//int doublons = 0;
 		for (int i = 0; i < rawLogs.length(); i++) {
 			int idLog = (Integer) rawLogs.getJSONObject(i).get("id");
 			int dateLog = (Integer) rawLogs.getJSONObject(i).get("date");
 			if(!(dateLogs.contains(dateLog))){
 				listeLogs.add(idLog);
 			}
+			/*
 			else{
 				doublons++;
 			}
+			*/
 			dateLogs.add(dateLog);
 		}
-		System.out.println("genLogs : il y a "+doublons+" doublons");
+		//System.out.println("genLogs : il y a "+doublons+" doublons");
 		return listeLogs;
 	}
 	
@@ -176,8 +289,6 @@ public class Player {
 			is.close();
 		}
 	}
-	
-	
 	
 	public static String readAll(Reader rd) throws IOException{
 		StringBuilder sb = new StringBuilder();
