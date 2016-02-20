@@ -24,7 +24,7 @@ public interface PlayerDAO {
 	 * @throws IOException 
 	 * @throws JSONException 
 	 */
-	public void fetchPlayerStatsFromLogsTF(int idSteam) throws JSONException, IOException;
+	public void fetchPlayerStatsFromLogsTF(String idSteam) throws JSONException, IOException;
 	/**
 	 * Update jouzineur stats from LogsTF
 	 * @param p

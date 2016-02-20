@@ -56,9 +56,15 @@ public class PlayerDAOImpl implements PlayerDAO{
 	}
 
 	@Override
-	public void fetchPlayerStatsFromLogsTF(int idSteam) throws JSONException, IOException {
+	public void fetchPlayerStatsFromLogsTF(String idSteam) throws JSONException, IOException {
 		Player jouzineur = new Player();
+		jouzineur.setIdSteam(idSteam);
 		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+idSteam).getJSONArray("logs");
+		//Choisir le nombre de logs a récuperer
+		for(int i = 0; i < 100; i++){
+			JSONObject log = rawLogs.getJSONObject(i);
+		}
+		
 		jouzineur.setNbMatchs(0);
 		jouzineur.setNbFrags(0);
 		jouzineur.setMoyenneFrags(0);
