@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import top5.rocket.stats.players.Player;
+import top5.rocket.stats.model.Player;
 
 /**
  * Calcul des statistiques pour chaque joueur sur sa page perso
