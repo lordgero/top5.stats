@@ -1,4 +1,4 @@
-package top5.rocket.stats.players;
+package top5.rocket.stats.model;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +9,9 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,19 +30,23 @@ import top5.rocket.stats.logs.LogTF;
  *	- La liste des pourcentages de jouzinage par classe (tableau associatif) (nomClasse : pourcentage)
  *	- 
  */
+@Entity
+@Table(name="PLAYER")
 public class Player {
 
+	/**
+	 * Les champs communs avec la BDD
+	 */
+	private int id;
 	private String idSteam;
 	private String pseudo;
-	// On retrouve un log avec son ID
-	private ArrayList<Integer> logsJoueur;
-	private HashMap<String, Integer> nombreClassesPrises;
-	private HashMap<String, Double> moyenneClassesPrises;
 	private int nbMatchs;
 	private int nbFrags;
 	private double moyenneFrags;
 	private double moyenneDMG;
 	private double moyenneAirshoutes;
+	
+	//stats util pour ici
 	private int nbDMG;
 	private int nbAirshoutes;
 	private int classesTotalesPrises;
@@ -52,7 +59,14 @@ public class Player {
 							   "heavyweapons", "engineer"};
 	
 	
+	// On retrouve un log avec son ID
+	private ArrayList<Integer> logsJoueur;
+	private HashMap<String, Integer> nombreClassesPrises;
+	private HashMap<String, Double> moyenneClassesPrises;
 	
+	public Player(){
+		
+	}
 	
 	public Player(String p, String id) throws JSONException, IOException{
 		this.pseudo = p;
@@ -71,6 +85,86 @@ public class Player {
 		this.logsJoueur = genLogs(rawLogs);
 		nbMatchs = nbFrags = 0;
 		moyenneFrags = 0;
+	}
+	
+	public int getNbFrags() {
+		return nbFrags;
+	}
+
+	public void setNbFrags(int nbFrags) {
+		this.nbFrags = nbFrags;
+	}
+
+	public double getMoyenneFrags() {
+		return moyenneFrags;
+	}
+
+	public void setMoyenneFrags(double moyenneFrags) {
+		this.moyenneFrags = moyenneFrags;
+	}
+
+	public double getMoyenneDMG() {
+		return moyenneDMG;
+	}
+
+	public void setMoyenneDMG(double moyenneDMG) {
+		this.moyenneDMG = moyenneDMG;
+	}
+
+	public double getMoyenneAirshoutes() {
+		return moyenneAirshoutes;
+	}
+
+	public void setMoyenneAirshoutes(double moyenneAirshoutes) {
+		this.moyenneAirshoutes = moyenneAirshoutes;
+	}
+
+	public int getNbDMG() {
+		return nbDMG;
+	}
+
+	public void setNbDMG(int nbDMG) {
+		this.nbDMG = nbDMG;
+	}
+
+	public int getNbAirshoutes() {
+		return nbAirshoutes;
+	}
+
+	public void setNbAirshoutes(int nbAirshoutes) {
+		this.nbAirshoutes = nbAirshoutes;
+	}
+
+	public int getClassesTotalesPrises() {
+		return classesTotalesPrises;
+	}
+
+	public void setClassesTotalesPrises(int classesTotalesPrises) {
+		this.classesTotalesPrises = classesTotalesPrises;
+	}
+
+	public HashMap<String, Integer> getNombreClassesPrises() {
+		return nombreClassesPrises;
+	}
+
+	public void setNombreClassesPrises(HashMap<String, Integer> nombreClassesPrises) {
+		this.nombreClassesPrises = nombreClassesPrises;
+	}
+
+	public HashMap<String, Double> getMoyenneClassesPrises() {
+		return moyenneClassesPrises;
+	}
+
+	public void setMoyenneClassesPrises(HashMap<String, Double> moyenneClassesPrises) {
+		this.moyenneClassesPrises = moyenneClassesPrises;
+	}
+
+	public int getId(){
+		return id;
+	}
+	
+	public void setId(int id){
+		this.id = id;
 	}
 	
 	public String getIdSteam() {
