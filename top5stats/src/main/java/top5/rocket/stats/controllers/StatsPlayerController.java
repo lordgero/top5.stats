@@ -7,12 +7,14 @@ import java.util.Locale;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import top5.rocket.stats.DAO.PlayerDAO;
 import top5.rocket.stats.model.Player;
 
 /**
@@ -25,7 +27,8 @@ public class StatsPlayerController {
 	private HashMap<String, String> top5jouzineurs = new HashMap<String, String>();
 	
 	
-	
+//	@Autowired
+//	PlayerDAO playerDao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(StatsPlayerController.class);
 	/**
@@ -50,7 +53,7 @@ public class StatsPlayerController {
 		model.addAttribute("nombreAirshoutesMoyen", jouzineur.getMoyenneAirshoutes());
 		model.addAttribute("nombreFragsMoyen", jouzineur.getMoyenneFrags());
 		model.addAttribute("nombreDommagesMoyen", jouzineur.getMoyenneDMG());
-		
+		//playerDao.fetchPlayerStatsFromLogsTF(jouzineur.getIdSteam());
 		for(String c : jouzineur.classes){
 			model.addAttribute(c, jouzineur.getMoyenneClassesPrises().get(c));
 		}

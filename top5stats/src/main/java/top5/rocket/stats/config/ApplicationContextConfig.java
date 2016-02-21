@@ -10,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import top5.rocket.stats.DAO.PlayerDAO;
+import top5.rocket.stats.DAO.PlayerDAOImpl;
 import top5.rocket.stats.model.Player;
-import top5.rocket.stats.model.PlayerDAO;
-import top5.rocket.stats.model.PlayerDAOImpl;
 
 /**
  * 
@@ -26,7 +27,7 @@ import top5.rocket.stats.model.PlayerDAOImpl;
  */
 
 @Configuration
-@ComponentScan("top5.rockets.stats.")
+//@ComponentScan("top5.rocket.stats.")
 @EnableTransactionManagement
 public class ApplicationContextConfig {
 	
@@ -46,9 +47,9 @@ public class ApplicationContextConfig {
 	public DataSource getDataSource() {
 	    BasicDataSource dataSource = new BasicDataSource();
 	    dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-	    dataSource.setUrl("jdbc:mysql://localhost:3306/usersdb");
+	    dataSource.setUrl("jdbc:mysql://localhost:3306/top5stats");
 	    dataSource.setUsername("root");
-	    dataSource.setPassword("secret");	 
+	    dataSource.setPassword("racers");	 
 	    return dataSource;
 	}
 	
@@ -57,7 +58,6 @@ public class ApplicationContextConfig {
 	public SessionFactory getSessionFactory(DataSource dataSource) {
 	 
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
-	 
 	    sessionBuilder.addAnnotatedClasses(Player.class);
 	    sessionBuilder.addProperties(getHibernateProperties());
 	    return sessionBuilder.buildSessionFactory();
@@ -81,8 +81,8 @@ public class ApplicationContextConfig {
 	}
 	
 	@Autowired
-	@Bean(name = "PlayerDAO")
-	public PlayerDAO getUserDao(SessionFactory sessionFactory) {
+	@Bean(name = "playerDao")
+	public PlayerDAO getPlayerDao(SessionFactory sessionFactory) {
 	    return new PlayerDAOImpl(sessionFactory);
 	}
 	

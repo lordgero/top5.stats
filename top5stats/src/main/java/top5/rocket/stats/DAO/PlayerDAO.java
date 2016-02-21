@@ -1,9 +1,12 @@
-package top5.rocket.stats.model;
+package top5.rocket.stats.DAO;
 
 import java.io.IOException;
 import java.util.List;
 
 import org.json.JSONException;
+import org.springframework.stereotype.Repository;
+
+import top5.rocket.stats.model.Player;
 
 public interface PlayerDAO {
 	

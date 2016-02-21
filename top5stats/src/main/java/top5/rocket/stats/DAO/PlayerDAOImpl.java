@@ -1,4 +1,4 @@
-package top5.rocket.stats.model;
+package top5.rocket.stats.DAO;
 
 
 import java.io.BufferedReader;
@@ -14,14 +14,20 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 
+import top5.rocket.stats.model.Player;
+
+@Repository
 public class PlayerDAOImpl implements PlayerDAO{
 
+	@Autowired
 	private SessionFactory sessionFactory;
 	
 	/**
@@ -51,18 +57,21 @@ public class PlayerDAOImpl implements PlayerDAO{
 	}
 
 	@Override
+	@Transactional
 	public Player get(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	@Override
+	@Transactional
 	public Player get(String idSteam){
 		//todo
 		return null;
 	}
 
 	@Override
+	@Transactional
 	public void fetchListLogs(String idSteam) throws JSONException, IOException {
 		Player jouzineur = new Player();
 		jouzineur.setIdSteam(idSteam);
@@ -82,6 +91,7 @@ public class PlayerDAOImpl implements PlayerDAO{
 	}
 
 	@Override
+	@Transactional
 	public void fetchPlayerStatsFromLogsTF(String idSteam) throws JSONException, IOException {
 		Player j = get(idSteam);
 		for(int id : j.getLogsJoueur()){
@@ -116,12 +126,14 @@ public class PlayerDAOImpl implements PlayerDAO{
 	}
 	
 	@Override
+	@Transactional
 	public void updatePlayerFromLogsTF(Player p) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	@Transactional
 	public void delete(int id) {
 		Player jouzineurToREKT = new Player();
 		jouzineurToREKT.setId(id);

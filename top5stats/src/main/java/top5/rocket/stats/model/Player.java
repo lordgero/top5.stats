@@ -4,7 +4,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.json.JSONException;
@@ -65,21 +70,25 @@ public class Player {
 	public Player() {
 		// TODO Auto-generated constructor stub
 	}
-
+	@Id
+	@GeneratedValue
+	@Column(name = "\"ID\"", columnDefinition = "serial")
 	public int getId(){
 		return id;
 	}
-	
+	@Id
+	@Column(name = "\"ID\"", columnDefinition = "serial")
 	public void setId(int id){
 		this.id = id;
 	}
-	
+	@Column(name = "\"IDSTEAM\"")
 	public String getIdSteam() {
 		return idSteam;
 	}
 	public void setIdSteam(String idSteam) {
 		this.idSteam = idSteam;
 	}
+	@Column(name = "\"PSEUDO\"")
 	public String getPseudo() {
 		return pseudo;
 	}
@@ -93,6 +102,7 @@ public class Player {
 		this.logsJoueur = logsJoueur;
 	}
 
+	@Column(name = "\"NBMATCHS\"")
 	public int getNbMatchs() {
 		return nbMatchs;
 	}
@@ -115,7 +125,7 @@ public class Player {
 	public void setMoyenneClassesPrises(HashMap<String, Double> moyenneClassesPrises) {
 		this.moyenneClassesPrises = moyenneClassesPrises;
 	}
-
+	@Column(name = "\"NBFRAGS\"")
 	public int getNbFrags() {
 		return nbFrags;
 	}
@@ -123,7 +133,7 @@ public class Player {
 	public void setNbFrags(int nbFrags) {
 		this.nbFrags = nbFrags;
 	}
-
+	@Column(name = "\"MOYFRAGS\"")
 	public double getMoyenneFrags() {
 		return moyenneFrags;
 	}
@@ -131,7 +141,7 @@ public class Player {
 	public void setMoyenneFrags(double moyenneFrags) {
 		this.moyenneFrags = moyenneFrags;
 	}
-
+	@Column(name = "\"MOYDMG\"")
 	public double getMoyenneDMG() {
 		return moyenneDMG;
 	}
@@ -139,7 +149,7 @@ public class Player {
 	public void setMoyenneDMG(double moyenneDMG) {
 		this.moyenneDMG = moyenneDMG;
 	}
-
+	@Column(name = "\"MOYAIR\"")
 	public double getMoyenneAirshoutes() {
 		return moyenneAirshoutes;
 	}
