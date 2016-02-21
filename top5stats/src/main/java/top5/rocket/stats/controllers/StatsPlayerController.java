@@ -1,21 +1,10 @@
 package top5.rocket.stats.controllers;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -49,15 +38,9 @@ public class StatsPlayerController {
 		top5jouzineurs.put("Gero", "[U:1:62587760]");
 		top5jouzineurs.put("Mooshi", "[U:1:55570032]");
 		top5jouzineurs.put("Ombrack", "[U:1:54738661]");
-		//System.out.println(top5jouzineurs.get(pseudoJoueur));
 		Player jouzineur = new Player(pseudoJoueur, top5jouzineurs.get(pseudoJoueur));
-		jouzineur.initStats();
 		String stats = jouzineur.toString();
 		System.out.println(stats);
-		/*
-		JSONObject json = readJsonFromUrl("http://logs.tf/json_search?player=76561198043755694");
-		System.out.println(json.toString());
-		*/
 		model.addAttribute("stats", stats);
 		model.addAttribute("joueur", pseudoJoueur);
 		model.addAttribute("nombreMatchs", jouzineur.getNbMatchs());

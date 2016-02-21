@@ -11,16 +11,34 @@ public interface PlayerDAO {
 	 * 
 	 * @return all player from the database maggle
 	 */
-	public List<Player> listPalyer();
+	public List<Player> listPlayer();
 	/**
 	 * Find jouzineur from id
 	 * @param id
 	 * @return
 	 */
 	public Player get(int id);
+	
+	/**
+	 * Retrouver un jouzineur depuis l'id steam
+	 * @param idSteam
+	 * @return
+	 */
+	public Player get(String idSteam);
+	
+	/**
+	 * Obtenir la liste des logs d'un joueur suivant son steam id.
+	 * Elimine les doublons et modifie l'attribut LogsJoueur du jouzineur.
+	 * @param idSteam : le steam id sous la forme [X:X:XXXXX]
+	 * @throws JSONException
+	 * @throws IOException
+	 * @throws la game avec l'eau du bébé
+	 */
+	public void fetchListLogs(String idSteam) throws JSONException, IOException;
 	/**
 	 * One time use function.
-	 * Find the logs of a jouzineur from logs.tf
+	 * Initialise les statistiques d'un jouzineur en parcourant tous les logs jusqu'au plus récent.
+	 * @param idSteam : le steam id sous la forme [X:X:XXXXX]
 	 * @throws IOException 
 	 * @throws JSONException 
 	 */
