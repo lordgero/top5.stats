@@ -8,6 +8,8 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -22,6 +24,9 @@ import org.hibernate.SessionFactory;
 public class PlayerDAOImpl implements PlayerDAO{
 
 	private SessionFactory sessionFactory;
+	private ArrayList<Integer> logsJoueur;
+	private HashMap<String, Integer> nombreClassesPrises;
+	private HashMap<String, Double> moyenneClassesPrises;
 	
 	/**
 	 * Constructeur vide de chie
