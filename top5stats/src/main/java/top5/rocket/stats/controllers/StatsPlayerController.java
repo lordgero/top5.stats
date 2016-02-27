@@ -27,8 +27,8 @@ public class StatsPlayerController {
 	private HashMap<String, String> top5jouzineurs = new HashMap<String, String>();
 	
 	
-//	@Autowired
-//	PlayerDAO playerDao;
+	@Autowired
+	PlayerDAO playerDao;
 	
 	private static final Logger logger = LoggerFactory.getLogger(StatsPlayerController.class);
 	/**
@@ -38,6 +38,7 @@ public class StatsPlayerController {
 	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public String stats(Locale locale, Model model, @PathVariable(value="joueur") final String pseudoJoueur) throws JSONException, IOException {
+		/*
 		top5jouzineurs.put("Gero", "[U:1:62587760]");
 		top5jouzineurs.put("Mooshi", "[U:1:55570032]");
 		top5jouzineurs.put("Ombrack", "[U:1:54738661]");
@@ -45,6 +46,34 @@ public class StatsPlayerController {
 		String stats = jouzineur.toString();
 		System.out.println(stats);
 		model.addAttribute("stats", stats);
+		model.addAttribute("joueur", pseudoJoueur);
+		model.addAttribute("nombreMatchs", jouzineur.getNbMatchs());
+		model.addAttribute("nombreAirshoutes", jouzineur.getNbAirshoutes());
+		model.addAttribute("nombreFrags", jouzineur.getNbFrags());
+		model.addAttribute("nombreDommages", jouzineur.getNbDMG()/10000);
+		model.addAttribute("nombreAirshoutesMoyen", jouzineur.getMoyenneAirshoutes());
+		model.addAttribute("nombreFragsMoyen", jouzineur.getMoyenneFrags());
+		model.addAttribute("nombreDommagesMoyen", jouzineur.getMoyenneDMG());
+		//playerDao.fetchPlayerStatsFromLogsTF(jouzineur.getIdSteam());
+		for(String c : jouzineur.classes){
+			model.addAttribute(c, jouzineur.getMoyenneClassesPrises().get(c));
+		}
+		*/
+		
+		playerDao.createPlayer("Gero", "[U:1:62587760]");
+		playerDao.createPlayer("Mooshi", "[U:1:55570032]");
+		playerDao.createPlayer("Ombrack", "[U:1:54738661]");
+		playerDao.createPlayer("Zelkhar", "[U:1:97408210]");
+		
+		//playerDao.fetchListLogs("[U:1:62587760]");
+		//playerDao.fetchPlayerStatsFromLogsTF("[U:1:62587760]");
+		
+		Player jouzineur = playerDao.getFromPseudo(pseudoJoueur);
+		
+		playerDao.initStats(jouzineur);
+		System.out.println("Derniere mise à jour : " + jouzineur.getLastUpdate());
+		System.out.println(jouzineur.toString());
+		
 		model.addAttribute("joueur", pseudoJoueur);
 		model.addAttribute("nombreMatchs", jouzineur.getNbMatchs());
 		model.addAttribute("nombreAirshoutes", jouzineur.getNbAirshoutes());

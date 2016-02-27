@@ -44,14 +44,18 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) throws JSONException, IOException {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		JSONObject json = readJsonFromUrl("http://logs.tf/json_search?player=76561198043755694");
-		System.out.println(json.toString());
+		playerDao.createPlayer("Gero", "[U:1:62587760]");
+		playerDao.createPlayer("Mooshi", "[U:1:55570032]");
+		
+		playerDao.fetchListLogs(playerDao.get("mooshi"));
+		//playerDao.fetchPlayerStatsFromLogsTF("[U:1:62587760]");
+		
+		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
 		
-		playerDao.fetchPlayerStatsFromLogsTF("[U:1:62587760]");
 		return "home";
 	}
 	

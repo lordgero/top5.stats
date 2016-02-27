@@ -30,6 +30,9 @@ public class PlayerDAOImpl implements PlayerDAO{
 	@Autowired
 	private SessionFactory sessionFactory;
 	
+	// Temporaire
+	private ArrayList<Player> joueurs;
+	
 	/**
 	 * Constructeur vide de chie
 	 */
@@ -43,6 +46,7 @@ public class PlayerDAOImpl implements PlayerDAO{
 	 */
 	public PlayerDAOImpl(SessionFactory sf){
 		this.sessionFactory = sf;
+		this.joueurs = new ArrayList<Player>();
 	}
 	
 	@Override
@@ -64,18 +68,48 @@ public class PlayerDAOImpl implements PlayerDAO{
 	}
 	
 	@Override
+	public Player getFromPseudo(String pseudo){
+		for(Player p : this.joueurs){
+			if(p.getPseudo().equals(pseudo))
+				return p;
+		}
+		return null;
+	}
+	
+	@Override
+	public void initStats(Player j) throws JSONException, IOException{
+		if(j.getLogsJoueur() == null){
+			this.fetchListLogs(j);
+			this.fetchPlayerStatsFromLogsTF(j);
+		}
+	}
+	
+	@Override
 	@Transactional
 	public Player get(String idSteam){
-		//todo
+		for(Player p : this.joueurs){
+			if(p.getIdSteam().equals(idSteam))
+				return p;
+		}
 		return null;
+	}
+	
+	@Override
+	public Player createPlayer(String pseudo, String idSteam) throws JSONException, IOException{
+		if(this.get(idSteam) == null){
+			Player jouzineur = new Player(pseudo, idSteam);
+			this.joueurs.add(jouzineur);
+			return jouzineur;
+		}
+		else{
+			return (this.get(idSteam));
+		}
 	}
 
 	@Override
 	@Transactional
-	public void fetchListLogs(String idSteam) throws JSONException, IOException {
-		Player jouzineur = new Player();
-		jouzineur.setIdSteam(idSteam);
-		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+idSteam).getJSONArray("logs");
+	public void fetchListLogs(Player jouzineur) throws JSONException, IOException {
+		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+jouzineur.getIdSteam()).getJSONArray("logs");
 		ArrayList<Integer> listeLogs = new ArrayList<Integer>();
 		ArrayList<Integer> dateLogs = new ArrayList<Integer>();
 		//int doublons = 0;
@@ -90,31 +124,17 @@ public class PlayerDAOImpl implements PlayerDAO{
 		jouzineur.setLogsJoueur(listeLogs);
 	}
 
+	
 	@Override
 	@Transactional
-	public void fetchPlayerStatsFromLogsTF(String idSteam) throws JSONException, IOException {
-		Player j = get(idSteam);
+	public void fetchPlayerStatsFromLogsTF(Player j) throws JSONException, IOException {
+		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+j.getIdSteam()).getJSONArray("logs");
+		int dateLog = (Integer) rawLogs.getJSONObject(0).get("date");
+		j.setLastUpdate(dateLog);
 		for(int id : j.getLogsJoueur()){
 			JSONObject log = readJsonFromUrl("http://logs.tf/json/"+id).getJSONObject("players");
 			try{
-				JSONObject statsJoueur = log.getJSONObject(idSteam);
-				j.setNbMatchs(j.getNbMatchs()+1);
-				j.setNbFrags(j.getNbFrags()+ (Integer) statsJoueur.get("kills"));
-				j.setNbAirshoutes(j.getNbAirshoutes()+ (Integer) statsJoueur.get("as"));
-				j.setNbDMG(j.getNbDMG()+ (Integer) statsJoueur.get("dmg"));
-				JSONArray classStats = statsJoueur.getJSONArray("class_stats");
-				for (int i = 0; i < classStats.length(); i++) {
-					String classe = classStats.getJSONObject(i).get("type").toString();
-					j.getNombreClassesPrises().put(classe, j.getNombreClassesPrises().get(classe)+1);
-					j.setClassesTotalesPrises(j.getClassesTotalesPrises()+1);
-				}
-				j.setMoyenneFrags(j.getNbFrags()/j.getNbMatchs());
-				j.setMoyenneAirshoutes(j.getNbAirshoutes()/j.getNbMatchs());
-				j.setMoyenneDMG(j.getNbDMG()/j.getNbMatchs());
-				j.setMoyenneOffclass(j.getClassesTotalesPrises()/j.getNbMatchs());
-				for(String c : j.getClasses()){
-					j.getMoyenneClassesPrises().put(c, (Math.round((((double) j.getNombreClassesPrises().get(c)/((double) j.getClassesTotalesPrises()))*100)*10d)/10d));
-				}
+				statistics(j, log);
 			}
 			catch(Exception e){
 				/* les vieux logs ont l'ancien format steam, du coup on ne retrouve pas les informations bonus 
@@ -127,10 +147,57 @@ public class PlayerDAOImpl implements PlayerDAO{
 	
 	@Override
 	@Transactional
-	public void updatePlayerFromLogsTF(Player p) {
-		// TODO Auto-generated method stub
+	public void updatePlayerFromLogsTF(Player j) throws JSONException, IOException {
+		ArrayList<Integer> logs = j.getLogsJoueur();
+		JSONArray rawLogs = readJsonFromUrl("http://logs.tf/json_search?player="+j.getIdSteam()).getJSONArray("logs");
+		// dateLog contient la date du dernier log
+		int dateLog = (Integer) rawLogs.getJSONObject(0).get("date");
+		int curDate = j.getLastUpdate();
+		j.setLastUpdate(dateLog);
 		
+		JSONObject log;
+		
+		if(dateLog != curDate){
+			log = readJsonFromUrl("http://logs.tf/json/"+j.getLogsJoueur().get(0)).getJSONObject("players");
+			statistics(j, log);
+		}
+		
+		int i = 1;
+		while(dateLog > curDate && i < logs.size()){
+			log = readJsonFromUrl("http://logs.tf/json/"+j.getLogsJoueur().get(i)).getJSONObject("players");
+			try{
+				statistics(j, log);
+			}
+			catch(Exception e){
+				System.out.println("logs vieux format // ignoré");
+				break;
+			}
+		}
 	}
+	
+	@Override
+	public void statistics(Player j, JSONObject log){
+		JSONObject statsJoueur = log.getJSONObject(j.getIdSteam());
+		j.setNbMatchs(j.getNbMatchs()+1);
+		j.setNbFrags(j.getNbFrags()+ (Integer) statsJoueur.get("kills"));
+		j.setNbAirshoutes(j.getNbAirshoutes()+ (Integer) statsJoueur.get("as"));
+		j.setNbDMG(j.getNbDMG()+ (Integer) statsJoueur.get("dmg"));
+		JSONArray classStats = statsJoueur.getJSONArray("class_stats");
+		for (int i = 0; i < classStats.length(); i++) {
+			String classe = classStats.getJSONObject(i).get("type").toString();
+			j.getNombreClassesPrises().put(classe, j.getNombreClassesPrises().get(classe)+1);
+			j.setClassesTotalesPrises(j.getClassesTotalesPrises()+1);
+		}
+		j.setMoyenneFrags(j.getNbFrags()/j.getNbMatchs());
+		j.setMoyenneAirshoutes(j.getNbAirshoutes()/j.getNbMatchs());
+		j.setMoyenneDMG(j.getNbDMG()/j.getNbMatchs());
+		j.setMoyenneOffclass(j.getClassesTotalesPrises()/j.getNbMatchs());
+		for(String c : j.getClasses()){
+			j.getMoyenneClassesPrises().put(c, (Math.round((((double) j.getNombreClassesPrises().get(c)/((double) j.getClassesTotalesPrises()))*100)*10d)/10d));
+		}
+	}
+	
+
 
 	@Override
 	@Transactional

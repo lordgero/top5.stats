@@ -1,6 +1,7 @@
 package top5.rocket.stats.model;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,6 +35,8 @@ public class Player {
 	private double moyenneDMG;
 	private double moyenneAirshoutes;
 	
+	private int lastUpdate;
+	
 	//stats util pour ici
 	private int nbDMG;
 	private int nbAirshoutes;
@@ -50,11 +53,13 @@ public class Player {
 	private ArrayList<Integer> logsJoueur;
 	private HashMap<String, Integer> nombreClassesPrises;
 	private HashMap<String, Double> moyenneClassesPrises;
+	private HashMap<String, Double> moyenneHeal;
 	
 	public Player(String p, String id) throws JSONException, IOException{
 		this.pseudo = p;
 		this.idSteam = id;
 		this.classesTotalesPrises = 0;
+		this.lastUpdate = -1;
 		
 		moyenneClassesPrises = new HashMap<String, Double>();
 		nombreClassesPrises = new HashMap<String, Integer>();
@@ -220,6 +225,15 @@ public class Player {
 
 	public void setClasses(String[] classes) {
 		this.classes = classes;
+	}
+	
+	@Column(name = "\"LASTUPDATE\"")
+	public int getLastUpdate(){
+		return lastUpdate;
+	}
+	
+	public void setLastUpdate(int lastUpdate){
+		this.lastUpdate = lastUpdate;
 	}
 	
 	@Override

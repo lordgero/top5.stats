@@ -1,11 +1,12 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
-<html>
     <head>
         <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
         <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,300italic,500,400italic,700,700italic' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="//storage.googleapis.com/code.getmdl.io/1.0.1/material.teal-red.min.css" />
+        <link rel="stylesheet" href="https://code.getmdl.io/1.1.1/material.blue_grey-blue.min.css" /> 
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <script src="//storage.googleapis.com/code.getmdl.io/1.0.1/material.min.js"></script>
         <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js" charset="utf-8"></script>
@@ -16,16 +17,13 @@
         <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-drawer">
             <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
-                <i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">people</i>
-                <span class="mdl-layout-title">
-                    Stats de ${joueur}
+				<span class="mdl-layout-title">
+				<i class="fa fa-bar-chart"></i>
+                    ${joueur}
                 </span>
                 <div class="mdl-layout-spacer"></div>
                 <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="#">Soldier</a>
-                <a class="mdl-navigation__link" href="#">Scout</a>
-                <a class="mdl-navigation__link" href="#">Demo</a>
-                <a class="mdl-navigation__link" href="#">Medic</a>
+                	"oh putain le pot, le POT! conTENT" - VinX, dit le Zoul
                 </nav>
             </div>
             </header>
@@ -33,21 +31,20 @@
             <div class="mdl-layout__drawer">
                 <span class="mdl-layout-title">top5stats</span>
                 <nav class="mdl-navigation">
-                <a class="mdl-navigation__link" href="/stats/">mix</a>
-                <a class="mdl-navigation__link" href="#">serv</a>
-                <a class="mdl-navigation__link" href="#">cochon</a>
+                <a class="mdl-navigation__link" href="http://mix.top5rocket.fr">mix</a>
+                <a class="mdl-navigation__link" href="steam://connect/91.121.207.47:27016:cochon">cochon</a>
                 <a class="mdl-navigation__link" href="#">about</a>
                 </nav>
             </div>
 
             <main class="mdl-layout__content mdl-color--grey-100"">
             <div class="mdl-grid main-content">
-                <!-- graphes pour le nombre de classes jouées -->
+                <!-- graphes pour le nombre de classes jouÃ©es -->
                 <div class="mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
                     <canvas id="classes" height="60"></canvas>
                 </div>
 
-                <!-- stats générales : frags, matchs joués, airshoutes -->
+                <!-- stats gÃ©nÃ©rales : frags, matchs jouÃ©s, airshoutes -->
                 <div class="mdl-cell mdl-cell--12-col mdl-grid">
                     <div class="mdl-cell--1-col"></div>
 
@@ -59,7 +56,7 @@
                             </h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <span class="demo-card-image__filename">Maps jouzinées</span>
+                            <span class="demo-card-image__filename">Maps jouzinÃ©es</span>
                         </div>
                     </div>
 
@@ -72,7 +69,7 @@
                             </h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <span class="demo-card-image__filename">Frags</span>
+                            <span class="demo-card-image__filename">Frags totaux</span>
                         </div>
                     </div>
 
@@ -85,7 +82,7 @@
                             </h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <span class="demo-card-image__filename">Airshoutes</span>
+                            <span class="demo-card-image__filename">Airshoutes totaux</span>
                         </div>
                     </div>
 
@@ -98,7 +95,7 @@
                             </h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <span class="demo-card-image__filename">Dommages</span>
+                            <span class="demo-card-image__filename">Dommages totaux</span>
                         </div>
                     </div>
 
@@ -128,7 +125,7 @@
                             </h2>
                         </div>
                         <div class="mdl-card__actions mdl-card--border">
-                            <span class="demo-card-image__filename">Moyenne de frags/map</span>
+                            <span class="demo-card-image__filename">Moyenne de frags par map</span>
                         </div>
                     </div>
 
@@ -148,7 +145,7 @@
                     <div class="mdl-cell--1-col"></div>
                 </div>
 
-                <!-- barres graphes pour faire joli -->
+                <!-- camemberts du heal -->
                 <div class="mdl-cell mdl-cell--12-col mdl-grid">
 
                 </div>
@@ -159,20 +156,19 @@
 
         <script type="application/javascript">
             var barData = {
-labels: ['Scout', 'Soldier', 'Pyro', 'Demo', 'h00vy', 'Ingé', 'Medic', 'Sniper', 'Spy'],
-        datasets: [
-        {
-label: '% de classes jouées',
-       fillColor: '#2979ff',
-       data: [${scout}, ${soldier}, ${pyro}, ${demoman}, ${heavyweapons}, ${engineer}, ${medic}, ${sniper}, ${spy}]
-        }
-        ]
-            };
-Chart.defaults.global.responsive = true;
-var context = document.getElementById('classes').getContext('2d');
-var clientsChart = new Chart(context).Bar(barData);
-</script>
+			labels: ['Scout', 'Soldier', 'Pyro', 'Demo', 'h00vy', 'IngÃ©', 'Medic', 'Sniper', 'Spy'],
+			        datasets: [
+			        {
+			label: '% de classes jouÃ©es',
+			       fillColor: '#2979ff',
+			       data: [${scout}, ${soldier}, ${pyro}, ${demoman}, ${heavyweapons}, ${engineer}, ${medic}, ${sniper}, ${spy}]
+			        }
+			        ]
+			            };
+			Chart.defaults.global.responsive = true;
+			var context = document.getElementById('classes').getContext('2d');
+			var clientsChart = new Chart(context).Bar(barData);
+		</script>
     </body>
-
 </html>
 
