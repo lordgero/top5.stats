@@ -60,13 +60,33 @@ public class StatsPlayerController {
 		}
 		*/
 		
+		
+		
+		//playerDao.fetchListLogs("[U:1:62587760]");
+		//playerDao.fetchPlayerStatsFromLogsTF("[U:1:62587760]");
+		
+		/*
 		playerDao.createPlayer("Gero", "[U:1:62587760]");
 		playerDao.createPlayer("Mooshi", "[U:1:55570032]");
 		playerDao.createPlayer("Ombrack", "[U:1:54738661]");
 		playerDao.createPlayer("Zelkhar", "[U:1:97408210]");
-		
-		//playerDao.fetchListLogs("[U:1:62587760]");
-		//playerDao.fetchPlayerStatsFromLogsTF("[U:1:62587760]");
+		playerDao.createPlayer("Enjoyed", "[U:1:8458321]");
+		playerDao.createPlayer("Blitzo", "[U:1:42669671]");
+		playerDao.createPlayer("Lake", "[U:1:39353955]");
+		playerDao.createPlayer("Neo", "[U:1:69115311]");
+		playerDao.createPlayer("Kinty", "[U:1:2043271]");
+		playerDao.createPlayer("Shado", "[U:1:69781430]");
+		playerDao.createPlayer("Medico", "[U:1:84161969]");
+		playerDao.createPlayer("Fmapkmn", "[U:1:38560474]");
+		playerDao.createPlayer("Leyo", "[U:1:39051312]");
+		playerDao.createPlayer("Screw", "[U:1:66218918]");
+		playerDao.createPlayer("Opti", "[U:1:31892934]");
+		playerDao.createPlayer("Kaiizo", "[U:1:49056203]");
+		playerDao.createPlayer("OMG", "[U:1:55003116]");
+		playerDao.createPlayer("Glastry", "[U:1:47477593]");
+		playerDao.createPlayer("Corbac", "[U:1:83489966]");
+		playerDao.createPlayer("Pierrot", "[U:1:120180855]");
+		*/
 		
 		Player jouzineur = playerDao.getFromPseudo(pseudoJoueur);
 		

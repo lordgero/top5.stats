@@ -1,11 +1,13 @@
 package top5.rocket.stats.config;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.SessionFactory;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -82,7 +84,7 @@ public class ApplicationContextConfig {
 	
 	@Autowired
 	@Bean(name = "playerDao")
-	public PlayerDAO getPlayerDao(SessionFactory sessionFactory) {
+	public PlayerDAO getPlayerDao(SessionFactory sessionFactory) throws JSONException, IOException {
 	    return new PlayerDAOImpl(sessionFactory);
 	}
 	

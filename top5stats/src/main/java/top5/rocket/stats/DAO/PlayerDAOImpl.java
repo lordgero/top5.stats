@@ -43,10 +43,32 @@ public class PlayerDAOImpl implements PlayerDAO{
 	 * Le constructeur qui nous va bien,
 	 * SessionFactory qui nous permet de comm avec la BDD
 	 * @param sf
+	 * @throws IOException 
+	 * @throws JSONException 
 	 */
-	public PlayerDAOImpl(SessionFactory sf){
+	public PlayerDAOImpl(SessionFactory sf) throws JSONException, IOException{
 		this.sessionFactory = sf;
 		this.joueurs = new ArrayList<Player>();
+		this.createPlayer("Gero", "[U:1:62587760]");
+		this.createPlayer("Mooshi", "[U:1:55570032]");
+		this.createPlayer("Ombrack", "[U:1:54738661]");
+		this.createPlayer("Zelkhar", "[U:1:97408210]");
+		this.createPlayer("Enjoyed", "[U:1:8458321]");
+		this.createPlayer("Blitzo", "[U:1:42669671]");
+		this.createPlayer("Lake", "[U:1:39353955]");
+		this.createPlayer("Neo", "[U:1:69115311]");
+		this.createPlayer("Kinty", "[U:1:2043271]");
+		this.createPlayer("Shado", "[U:1:69781430]");
+		this.createPlayer("Medico", "[U:1:84161969]");
+		this.createPlayer("Fmapkmn", "[U:1:38560474]");
+		this.createPlayer("Leyo", "[U:1:39051312]");
+		this.createPlayer("Screw", "[U:1:66218918]");
+		this.createPlayer("Opti", "[U:1:31892934]");
+		this.createPlayer("Kaiizo", "[U:1:49056203]");
+		this.createPlayer("OMG", "[U:1:55003116]");
+		this.createPlayer("Glastry", "[U:1:47477593]");
+		this.createPlayer("Corbac", "[U:1:83489966]");
+		this.createPlayer("Pierrot", "[U:1:120180855]");
 	}
 	
 	@Override
